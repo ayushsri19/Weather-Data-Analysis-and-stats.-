@@ -1,0 +1,6 @@
+{
+  "name": "Weather Data Analysis & Statistics Dashboard",
+  "description": "A comprehensive weather data analytics platform for data science projects featuring descriptive statistics, correlation matrix, outlier detection, trend modeling, seasonal breakdowns, and AI insights.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather Data Analysis &amp; Statistics Dashboard</title>
+    <meta name="description" content="A comprehensive weather data analytics platform for data science projects featuring descriptive statistics, correlation matrix, outlier detection, trend modeling, seasonal breakdowns, and AI insights." />
+    <meta property="og:title" content="Weather Data Analysis &amp; Statistics Dashboard" />
+    <meta property="og:description" content="A comprehensive weather data analytics platform for data science projects featuring descriptive statistics, correlation matrix, outlier detection, trend modeling, seasonal breakdowns, and AI insights." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script>
+      (function() {
+        try {
+          // Intercept and prevent "Cannot set property fetch of #<Window> which has only a getter"
+          const origDefineProperty = Object.defineProperty;
+          Object.defineProperty = function(obj, prop, descriptor) {
+            if (obj === window && prop === 'fetch' && descriptor) {
+              if (descriptor.get && !descriptor.set) {
+                let currentVal = undefined;
+                try { currentVal = descriptor.get(); } catch (e) {}
+                const origGetter = descriptor.get;
+                return origDefineProperty.call(Object, obj, prop, {
+                  ...descriptor,
+                  get: function() {
+                    return currentVal !== undefined ? currentVal : origGetter.call(this);
+                  },
+                  set: function(val) {
+                    currentVal = val;
+                  },
+                  configurable: true,
+                });
+              }
+            }
+            return origDefineProperty.apply(Object, arguments);
+          };
+
+          // Patch existing fetch property on window if it lacks a setter
+          const winDesc = Object.getOwnPropertyDescriptor(window, 'fetch');
+          if (winDesc && !winDesc.set && (winDesc.get || !winDesc.writable) && winDesc.configurable) {
+            let fetchInstance = window.fetch;
+            origDefineProperty.call(Object, window, 'fetch', {
+              get: function() { return fetchInstance; },
+              set: function(fn) { fetchInstance = fn; },
+              configurable: true,
+              enumerable: winDesc.enumerable !== false,
+            });
+          }
+
+          // Also suppress any unhandled TypeError regarding fetch getter
+          window.addEventListener('error', function(event) {
+            if (event && event.message && event.message.includes('fetch') && event.message.includes('getter')) {
+              event.preventDefault();
+              event.stopPropagation();
+              return true;
+            }
+          }, true);
+        } catch (err) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+
